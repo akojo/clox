@@ -1,0 +1,10 @@
+{
+    "editor.formatOnSave": true,
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/workspaces/clox",
+            "binaryPath": "/workspaces/clox/clox",
+            "binaryArgs": []
+        }
+    ]
+}
