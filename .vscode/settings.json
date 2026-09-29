@@ -6,5 +6,7 @@
             "binaryPath": "/workspaces/clox/clox",
             "binaryArgs": []
         }
-    ]
+    ],
+    "search.useParentIgnoreFiles": true,
+    "explorer.excludeGitIgnore": true
 }

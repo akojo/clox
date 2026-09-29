@@ -1,16 +1,34 @@
+CLOX := clox
+
 all_sources = $(wildcard *.c)
 all_objects = $(subst .c,.o,$(all_sources))
 
-clox: $(all_objects)
+$(CLOX): $(all_objects)
 	@echo LINK $@
 	$(quiet)$(LINK.c) $^ $(LDLIBS) -o $@
 
-clean:
-	rm -f clox $(all_objects) $(call to-deps,$(all_sources))
+CLOX_TEST = test/clox_test
 
-.PHONY: clean
+test_sources = $(wildcard test/*.cpp)
+test_objects = $(subst .cpp,.o,$(test_sources))
+
+$(CLOX_TEST): LDLIBS = -lCppUTest
+$(CLOX_TEST): $(test_objects) $(filter-out main.o,$(all_objects))
+	@echo LINK $@
+	$(quiet)$(LINK.cc) $^ $(LDLIBS) -o $@
+
+test: $(CLOX_TEST)
+	$(CLOX_TEST)
+
+clean:
+	rm -f $(CLOX) $(all_objects) $(call to-deps,$(all_sources)) \
+		$(CLOX_TEST) $(test_objects) $(call to-deps,$(test_sources))
+
+.PHONY: test clean
 
 quiet := $(if $V,,@)
+
+CPPFLAGS := -I.
 
 define to-deps
 $(join $(dir $1),$(addprefix .,$(addsuffix .d,$(notdir $1))))
